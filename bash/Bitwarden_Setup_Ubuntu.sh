@@ -19,7 +19,15 @@ handle_error() {
 # Remove conflicting packages
 conflicting_packages=("docker.io" "docker-doc" "docker-compose" "podman-docker" "containerd" "runc")
 for pkg in "${conflicting_packages[@]}"; do
-    sudo apt-get remove -y "$pkg" || handle_error "Failed to remove $pkg"
+
+if dpkg -l | grep -qw "$pkg"; then
+    echo "Package $pkg is installed. Removing..."
+    sudo apt-get remove -y "$pkg"
+    echo "Package $pkg has been removed."
+else
+    echo "Package $pkg is not installed."
+fi
+
 done
 
 # Setup Docker repository
