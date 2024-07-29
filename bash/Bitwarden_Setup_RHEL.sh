@@ -3,7 +3,7 @@
 # Script for installing Docker and setting up Bitwarden on RHEL/CentOS/Rocky Linux
 
 # Define variables
-DOCKER_REPO="https://download.docker.com/linux/centos/docker-ce.repo"
+DOCKER_REPO="https://download.docker.com/linux/rhel/docker-ce.repo"
 BITWARDEN_DOWNLOAD_URL="https://func.bitwarden.com/api/dl/?app=self-host&platform=linux"
 BITWARDEN_INSTALL_DIR="/opt/bitwarden"
 BITWARDEN_USER="bitwarden"
