@@ -50,6 +50,14 @@ sudo mkdir -p "$BITWARDEN_INSTALL_DIR"
 sudo chmod -R 700 "$BITWARDEN_INSTALL_DIR"
 sudo chown -R "$BITWARDEN_USER:$BITWARDEN_USER" "$BITWARDEN_INSTALL_DIR"
 
-# Install Bitwarden
-echo "Switching to the $BITWARDEN_USER user"
-sudo su - "$BITWARDEN_USER" -c "cd $BITWARDEN_INSTALL_DIR && curl -Lso bitwarden.sh '$BITWARDEN_DOWNLOAD_URL' && chmod 700 bitwarden.sh && ./bitwarden.sh install" || handle_error "Failed to install Bitwarden"
+# Always download the Bitwarden install script
+echo "Downloading Bitwarden install script as $BITWARDEN_USER..."
+sudo su - "$BITWARDEN_USER" -c "cd $BITWARDEN_INSTALL_DIR && curl -Lso bitwarden.sh '$BITWARDEN_DOWNLOAD_URL' && chmod 700 bitwarden.sh" || handle_error "Failed to download Bitwarden install script"
+
+# Run install unless --noinstall is passed
+if [[ ! " $* " =~ --noinstall ]]; then
+    echo "Running Bitwarden install script..."
+    sudo su - "$BITWARDEN_USER" -c "cd $BITWARDEN_INSTALL_DIR && ./bitwarden.sh install" || handle_error "Failed to install Bitwarden"
+else
+    echo "Skipping Bitwarden installation step due to --noinstall flag."
+fi
